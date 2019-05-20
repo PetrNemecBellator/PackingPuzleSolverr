@@ -30,7 +30,10 @@ addShapeB.onclick = () =>{
   
   
 }
-
+let enumCor = {
+  X:0,
+  Y:1
+};
 function testOutput(stringM){
   var testOUtput = document.getElementById("testL");
   var li = document.createElement("li");
@@ -39,115 +42,146 @@ function testOutput(stringM){
 } 
 
 var BlockG =  function(){
-  const blockSize= 25;//px?
-  this.numberOfSides =0;
-  this.blocksF = [];
-  this.tilesMap= [[]];
-    
-    
-  this.addrealBlock = () =>{
-      for (let i = 0 ; i < this.blocksF.length; i ++){
-        this.blocksF[0].sort(); 
-      }
-      this.getBlockfValues();
-    }
-  this._getBlocksFromTable = (my_table) =>{
-      //init
-      let rowL = my_table.rows.length;
-      for(let rowI=0; rowI < rowL ; rowI++){
-        collumsL = my_table.rows[rowI].cells.length
-        for (let collumsI=0; collumsI < collumsL; collumsI++ ){
-        console.log("x:", collumsI, " y:", rowI ,my_table.rows[rowI].cells[collumsI].style.getPropertyValue("background-color"));
-        if (my_table.rows[rowI].cells[collumsI].style.getPropertyValue("background-color")== "none" ||my_table.rows[rowI].cells[collumsI].style.getPropertyValue("background-color")==""){
+        const blockSize= 25;//px?
+        this.numberOfSides =0;
+        this.blocksF = [];
         
-          continue;
-        }
-        //collumsI = Xpos , rowI = Ypos
-          this.blocksF.push([collumsI,rowI]);
-          console.log("true". rowI ," " ,collumsI);
-          continue;
-
-        }
-      }  
-      return;
-  }
-  this._conversionToTrueFalseTable = (my_table) => {
-    //get min max vlaues of x y to minimaze table    
-    let minX, maxX, minY, maxY;
-    minX = this.blocksF[0][0];
-    maxX = this.blocksF[0][0];
-    minY = this.blocksF[0][1];
-    maxY = this.blocksF[0][1];
-    for (let i =1 ; i< this.blocksF.length ; i++){
-       if (this.blocksF[i][0] < minX ) {
-         minX = this.blocksF[i][0];
-         continue;
-       }
-       if (this.blocksF[i][0]> maxX){
-         maxX = this.blocksF[i][0];
-         continue;
-       }
-       if(this.blocksF[i][1]< minY){
-         minY = this.blocksF[i][1];
-         continue;
-       }
-       if (this.blocksF[i][1] > maxY){
-         maxY = this.blocksF[i][1];
-         continue;
-       }
-       
-    }
-
-    maxX -= minX;
-    maxY -= minY;
-    maxX++;
-    minY++;
-    testOUtput("maxX " + maxX);
-    testOUtput("maxY"+maxY);
-    
-   var i = 0;
-    for(let x = 0 ; x < maxX ; x++){
-      for(let y = 0; y< maxY ; y++ ){
-        
-        
-         testOutput(maxX + " " + maxY    + " x= " + x+ " y= " + y) ;/*
-          if ( typeof this.blocksF[y][x] == undefined){
-            this.tilesMap[y][x] == "false";
-          }else{
-            this.tilesMap[y][x] == "true";
-          } 
-                       */
-       
-      }
-    }
-    testOutput("vypis pole true false")
-    this._getBlockfValues(this.tilesMap);
-  }
-  this.addBlock = ( my_table) =>{
-    this._getBlocksFromTable(my_table); //get x y coordinates of each block
-    this._conversionToTrueFalseTable(my_table);
-    this._getBlockfValues(this.blocksF);
-      
-        //addrealBlock();
-    }
-
-   
-
-    this._getBlockfValues = (array) =>{
-      let rowL = array.length;
-      
-      for (let row = 0 ; row < rowL ; row++){
-        
-          testOutput("<li>block<b>[X]</b>= "+ array[row][0] +" <b> [Y]: </b>"+ array[row][1]) + "</li>";  
           
-        
-        
-      }
-      testOutput("<br>")
-      return;
-    }
+          
+        this.addrealBlock = () =>{
+            for (let i = 0 ; i < this.blocksF.length; i ++){
+              this.blocksF[0].sort(); 
+            }
+            this.getBlockfValues();
+          }
 
-}
+
+        this._getBlocksFromTable = (my_table) =>{
+            //init
+            let rowL = my_table.rows.length;
+            for(let rowI=0; rowI < rowL ; rowI++){
+              collumsL = my_table.rows[rowI].cells.length
+              for (let collumsI=0; collumsI < collumsL; collumsI++ ){
+              console.log("x:", collumsI, " y:", rowI ,my_table.rows[rowI].cells[collumsI].style.getPropertyValue("background-color"));
+              if (my_table.rows[rowI].cells[collumsI].style.getPropertyValue("background-color")== "none" ||my_table.rows[rowI].cells[collumsI].style.getPropertyValue("background-color")==""){
+              
+                continue;
+              }
+              //collumsI = Xpos , rowI = Ypos
+                this.blocksF.push([collumsI,rowI]);
+                console.log("true". rowI ," " ,collumsI);
+                continue;
+
+              }
+            }  
+            return;
+        }
+        this.degresFormat= [];
+
+        this._conversionToDegrees = () =>{
+          console.log("vypis hodnot")
+          console.log(isDefined(undefined));
+          console.log(this.blocksF)
+          let first =true;
+          let prevusCorX = 0 ;
+          let prevusCorY = 0;  
+          let directionUp, directionDown, directionLeft, directionRight;
+          let tempDegres;
+          let crosingS=[]
+          for (let x=0 ; x<this.blocksF.length ;x++){ 
+                if (isDefined(this.blocksF[x][enumCor.Y]) && isDefined(this.blocksF[x][enumCor.X]) ){ // does this point realy exists
+                  console.log("souradnice jsou definovany X:" + this.blocksF[x][enumCor.X] + "Y:" + this.blocksF[x][enumCor.Y])
+                  if (first){
+                    prevusCorX = this.blocksF[x][enumCor.X];
+                    prevusCorY = this.blocksF[x][enumCor.Y]; 
+                    first = false;           
+                  }
+                  
+                  if (this.blocksF[x][enumCor.Y] == prevusCorY && this.blocksF[x][enumCor.X]- prevusCorX == 1 ){ // is on the same y level
+                    if (directionUp){ //is that a corner 
+                      this.degresFormat.push(90);
+                      directionUp =false;
+                      directionDown = false;
+                      directionLeft = false;
+                      directionRight = false;
+                    }else{
+                      directionRight = true;
+                      tempDegres = 180; //same Y
+                    }
+
+                    if (isDefined(this.blocksF[x][enumCor.Y+1]) && isDefined(this.blocksF[x][enumCor.X])){ //&& this.blocksF{ //does block continue up
+                      
+                      tempDegres = 270;
+                      directionUp = true;
+                      x++; // to store upper block not old one
+                    
+                    }
+                    if(isDefined(this.blocksF[x][enumCor.Y-1]) && isDefined(this.blocksF[x][enumCor.X])){ //&& this.blocksF ){//does block continue down
+                    
+                      if (directionUp){// if there is eather way up and donw if yes remember croosing
+                        crosingS.push([x]);
+                     
+                      }else{
+                        directionDown = true;
+                        this.degresFormat.push(90);
+                        this.degresFormat.push(180);
+                        x++;
+                      }
+                   }
+         
+                }
+                  
+                prevusCorX = this.blocksF[x][enumCor.X];
+                prevusCorY = this.blocksF[x][enumCor.Y]; 
+                console.log(this.degresFormat)
+                if (tempDegres != 0){
+                  this.degresFormat.push(tempDegres) 
+
+                }
+                
+              }         
+                
+              
+              
+                console.log("X=" +"[" + this.blocksF[x][0]+ "]"  + "Y=" + y + "[" + this.blocksF[x][1] + "]");
+            } 
+          }
+          isDefined = (variable) =>{
+            return !( variable === undefined);
+          }
+
+
+         
+          this.addBlock = ( my_table) =>{
+            this._getBlocksFromTable(my_table); //get x y coordinates of each block
+            this._getBlockfValues(this.blocksF);
+            this._conversionToDegrees();
+            testOutput("vypis pole true false")
+           
+              
+                //addrealBlock();
+            }
+        
+            
+        
+            this._getBlockfValues = function(array){
+              let rowL = array.length;
+              
+              for (let row = 0 ; row < rowL ; row++){
+                
+                  testOutput("<li>block<b>[X]</b>= "+ array[row][0] +" <b> [Y]: </b>"+ array[row][1]) + "</li>";  
+                  
+                
+                
+              }
+              testOutput("<br>")
+              return;
+            }
+        
+        // this._getBlockfValues(this.blocksF);
+  }
+  
+
 
 
 
@@ -189,10 +223,10 @@ function dinamic_table(){
         
       }
     }
+  }
 }
 
 
 
 
 
-};
