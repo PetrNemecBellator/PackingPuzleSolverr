@@ -91,14 +91,17 @@ var BlockG =  function(){
           for (let x=0 ; x<this.blocksF.length ;x++){ 
                 if (isDefined(this.blocksF[x][enumCor.Y]) && isDefined(this.blocksF[x][enumCor.X]) ){ // does this point realy exists
                   console.log("souradnice jsou definovany X:" + this.blocksF[x][enumCor.X] + "Y:" + this.blocksF[x][enumCor.Y])
+                  console.log("aktualni prubeh: " + x);
                   if (first){
                     prevusCorX = this.blocksF[x][enumCor.X];
                     prevusCorY = this.blocksF[x][enumCor.Y]; 
-                    first = false;           
+                    first = false;
+                    continue;
                   }
                   
-                  if (this.blocksF[x][enumCor.Y] == prevusCorY && this.blocksF[x][enumCor.X]- prevusCorX == 1 ){ // is on the same y level
+                  if (this.blocksF[x][enumCor.Y] == prevusCorY ){ // is on the same y level
                     if (directionUp){ //is that a corner 
+                      console.log("push 90 nahoru");
                       this.degresFormat.push(90);
                       directionUp =false;
                       directionDown = false;
@@ -106,35 +109,38 @@ var BlockG =  function(){
                       directionRight = false;
                     }else{
                       directionRight = true;
+                      console.log("stejne y")
                       tempDegres = 180; //same Y
                     }
 
                     if (isDefined(this.blocksF[x][enumCor.Y+1]) && isDefined(this.blocksF[x][enumCor.X])){ //&& this.blocksF{ //does block continue up
-                      
+                      console.log("shape goes sudenly up");
                       tempDegres = 270;
                       directionUp = true;
-                      x++; // to store upper block not old one
+                       // to store upper block not old one
                     
                     }
                     if(isDefined(this.blocksF[x][enumCor.Y-1]) && isDefined(this.blocksF[x][enumCor.X])){ //&& this.blocksF ){//does block continue down
-                    
+                      console.log("shape goes sudenly down");
                       if (directionUp){// if there is eather way up and donw if yes remember croosing
+                        console.log("krizovatka pitoma na: " + x)
                         crosingS.push([x]);
                      
                       }else{
+                        console.log("tvar a pak cesta dolu")
                         directionDown = true;
-                        this.degresFormat.push(90);
-                        this.degresFormat.push(180);
-                        x++;
+                        tempDegres = 180;
+                        
                       }
                    }
          
                 }
-                  
+                console.log("aktualni prubeh: " + x);
                 prevusCorX = this.blocksF[x][enumCor.X];
                 prevusCorY = this.blocksF[x][enumCor.Y]; 
                 console.log(this.degresFormat)
                 if (tempDegres != 0){
+                  console.log("push tempDegress:" + tempDegres)
                   this.degresFormat.push(tempDegres) 
 
                 }
