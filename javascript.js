@@ -22,18 +22,29 @@ recalcB.onclick =function (){
   my_table.innerHTML = "";
   dinamic_table();
 }
+enumSides = {
+  up:1,
+  down:2,
+  left:3,
+  right:4,
+  wronSide: 5555
+  
+};
+const enumCor = {
+  X:0,
+  Y:1
+};
 
 addShapeB.onclick = () =>{
-  
+  console.log("zmackl sem tlacitko")  
   let shap = new BlockG();
+  //shap.blocksF = [[1,1][1,2]]//je vpravo
+  //shap._conversionToDegrees();
   shap.addBlock(my_table);
   
   
 }
-let enumCor = {
-  X:0,
-  Y:1
-};
+
 function testOutput(stringM){
   var testOUtput = document.getElementById("testL");
   var li = document.createElement("li");
@@ -79,86 +90,66 @@ var BlockG =  function(){
         this.degresFormat= [];
 
         this._conversionToDegrees = () =>{
+            this.relativDirection = function(originalBlockX,originalBlockY , newBlockX , newBlockY){
+            if(originalBlockY == newBlockY ){
+              if (originalBlockX - newBlockX == -1  ){
+                return enumSides.right;
+              }
+              if (originalBlockX - newBlockX == 1){
+                return enumSides.left;
+              }
+            }
+            if (originalBlockX == newBlockX){
+              if (originalBlockY - newBlockY == -1 ){
+                return enumSides.down;
+              }
+              if(originalBlockY - newBlockY == 1){
+                return enumSides.up;
+              }
+            } 
+              return enumSides.wronSide;
+          }
+          this.haveDifferentNeightbourts =(blockX,blockY) => {
+              return;
+          };
           console.log("vypis hodnot")
-          console.log(isDefined(undefined));
           console.log(this.blocksF)
           let first =true;
-          let prevusCorX = 0 ;
-          let prevusCorY = 0;  
-          let directionUp, directionDown, directionLeft, directionRight;
+          let originalBlockX,originalBlockY,newBlockX,newBlockY;  
+          
           let tempDegres;
           let crosingS=[]
-          for (let x=0 ; x<this.blocksF.length ;x++){ 
-                if (isDefined(this.blocksF[x][enumCor.Y]) && isDefined(this.blocksF[x][enumCor.X]) ){ // does this point realy exists
-                  console.log("souradnice jsou definovany X:" + this.blocksF[x][enumCor.X] + "Y:" + this.blocksF[x][enumCor.Y])
-                  console.log("aktualni prubeh: " + x);
-                  if (first){
-                    prevusCorX = this.blocksF[x][enumCor.X];
-                    prevusCorY = this.blocksF[x][enumCor.Y]; 
-                    first = false;
-                    continue;
-                  }
-                  
-                  if (this.blocksF[x][enumCor.Y] == prevusCorY ){ // is on the same y level
-                    if (directionUp){ //is that a corner 
-                      console.log("push 90 nahoru");
-                      this.degresFormat.push(90);
-                      directionUp =false;
-                      directionDown = false;
-                      directionLeft = false;
-                      directionRight = false;
-                    }else{
-                      directionRight = true;
-                      console.log("stejne y")
-                      tempDegres = 180; //same Y
-                    }
+          for (let x=0 ; x<this.blocksF.length-1 ;x++){ 
+            console.log("zmackl sem tlacitko"+ enumCor.X + " " + enumCor.Y)
+            originalBlockX = this.blocksF[x][0];
+            originalBlockY = this.blocksF[x][1];
+            console.log("original X=" +"[" +originalBlockX+ "]"  + "Y=" + "[" + originalBlockY + "]");
+            console.log("____________________________________");
+            newBlockX = this.blocksF[x+1][0];//0=X 
+            newBlockY = this.blocksF[x+1][1];//1=Y
+            console.log("new blok X=" +"[" +newBlockX+ "]"  + "Y="  + "[" + newBlockY + "]");
 
-                    if (isDefined(this.blocksF[x][enumCor.Y+1]) && isDefined(this.blocksF[x][enumCor.X])){ //&& this.blocksF{ //does block continue up
-                      console.log("shape goes sudenly up");
-                      tempDegres = 270;
-                      directionUp = true;
-                       // to store upper block not old one
-                    
-                    }
-                    if(isDefined(this.blocksF[x][enumCor.Y-1]) && isDefined(this.blocksF[x][enumCor.X])){ //&& this.blocksF ){//does block continue down
-                      console.log("shape goes sudenly down");
-                      if (directionUp){// if there is eather way up and donw if yes remember croosing
-                        console.log("krizovatka pitoma na: " + x)
-                        crosingS.push([x]);
-                     
-                      }else{
-                        console.log("tvar a pak cesta dolu")
-                        directionDown = true;
-                        tempDegres = 180;
-                        
-                      }
-                   }
-         
-                }
-                console.log("aktualni prubeh: " + x);
-                prevusCorX = this.blocksF[x][enumCor.X];
-                prevusCorY = this.blocksF[x][enumCor.Y]; 
-                console.log(this.degresFormat)
-                if (tempDegres != 0){
-                  console.log("push tempDegress:" + tempDegres)
-                  this.degresFormat.push(tempDegres) 
+            let direction = this.relativDirection(originalBlockX,originalBlockY,newBlockX,newBlockY);
+            if (direction== enumSides.up){
+              console.log("up");
 
-                }
-                
-              }         
-                
-              
-              
-                console.log("X=" +"[" + this.blocksF[x][0]+ "]"  + "Y=" + y + "[" + this.blocksF[x][1] + "]");
-            } 
-          }
-          isDefined = (variable) =>{
-            return !( variable === undefined);
+            }else if (direction == enumSides.down){
+              console.log("down");
+            }else if (direction == enumSides.left){
+              console.log("left");
+            }else if(direction == enumSides.right){
+              console.log("right");
+            }else{
+              console.log("neco je fakt spatne nespravny smer")
+            }  
+            console.log("****************************")
+          
+          
+          }      
+          
           }
 
-
-         
-          this.addBlock = ( my_table) =>{
+            this.addBlock = ( my_table) =>{
             this._getBlocksFromTable(my_table); //get x y coordinates of each block
             this._getBlockfValues(this.blocksF);
             this._conversionToDegrees();
@@ -183,9 +174,17 @@ var BlockG =  function(){
               testOutput("<br>")
               return;
             }
+     }//konec objektu 
+          
+          
+          
+isDefined = (variable) =>{
+  return !( variable === undefined);
+}
+
         
         // this._getBlockfValues(this.blocksF);
-  }
+  
   
 
 
@@ -207,32 +206,27 @@ function create_cell(){
       this.ithasbeenClicked = true;
     }else{
       this.ithasbeenClicked=false;
-     
       td.setAttribute("style","background-color:none;");
-    }
-  }
-  return td;
-}
-
-function dinamic_table(){
-  /*
-  dinamic table with interactiv collums it 
-  serves as input for our puzzle solver.
-  */
-  my_table = document.getElementById("tableInput");
-    for (let iy = 0 ; iy< y +1;iy++ ){
-      myRow = my_table.insertRow(0);
       
-      for(let ix = 0; ix < x +1 ; ix++){
-        
-        myRow.appendChild(create_cell());//insertCell(ix).innerHTML="[X: " +( ix) + "Y: " +(y- iy)+"]";
-        
       }
     }
+    return td;
   }
+
+  function dinamic_table(){
+    /*
+    dinamic table with interactiv collums it 
+    serves as input for our puzzle solver.
+    */
+    my_table = document.getElementById("tableInput");
+      for (let iy = 0 ; iy< y +1;iy++ ){
+        myRow = my_table.insertRow(0);
+        
+        for(let ix = 0; ix < x +1 ; ix++){
+          
+          myRow.appendChild(create_cell());//insertCell(ix).innerHTML="[X: " +( ix) + "Y: " +(y- iy)+"]";
+          
+        }
+      }
+    }
 }
-
-
-
-
-
