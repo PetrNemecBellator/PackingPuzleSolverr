@@ -60,10 +60,11 @@ var BlockG =  function(){
           
           
         this.addrealBlock = () =>{
+            this.blocksF.sort();
             for (let i = 0 ; i < this.blocksF.length; i ++){
               this.blocksF[0].sort(); 
             }
-            this.getBlockfValues();
+            this._getBlockfValues();
           }
 
 
@@ -90,6 +91,7 @@ var BlockG =  function(){
         this.degresFormat= [];
 
         this._conversionToDegrees = () =>{
+            
             this.relativDirection = function(originalBlockX,originalBlockY , newBlockX , newBlockY){
             if(originalBlockY == newBlockY ){
               if (originalBlockX - newBlockX == -1  ){
@@ -109,48 +111,124 @@ var BlockG =  function(){
             } 
               return enumSides.wronSide;
           }
-          this.haveDifferentNeightbourts =(blockX,blockY) => {
-              return;
+          this.findBlockonSpecificSide =(actualBlockX,actulaBlockY,sideYouNeedTofind) => {
+           
+                console.log("vstupni blok existuje")
+                if (sideYouNeedTofind == enumSides.down){
+                  console.log("kontroluju dolu")
+                  let value = (this.blocksF.find(function(element){
+                    console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
+                    
+                    return actualBlockX - element[0] == 0   && actulaBlockY -  element[1] == -1;
+                  }))
+
+                  if ( isDefined(value)){
+                    return -1;
+                  }
+                  return value;
+                 
+                }else if(sideYouNeedTofind == enumSides.up){ 
+                  console.log("kontroluju nahoru")
+                  let value = (this.blocksF.find(function(element){
+                    
+                    return actualBlockX - element[0] == 0   && actulaBlockY -  element[1] ==1;
+                  }))
+                  if ( isDefined(value)){
+                    return -1;
+                  }
+                  return value;
+
+                  
+                }else if (sideYouNeedTofind == enumSides.left){
+                  let value = (this.blocksF.find(function(element){
+                    
+                    return actualBlockX - element[0] == 1   && actulaBlockY -  element[1] ==0;
+                  }))
+                  if ( isDefined(value)){
+                    return -1;
+                  }
+                  return value
+                  
+                }else if (sideYouNeedTofind == enumSides.right){
+                  let value =(this.blocksF.find(function(element){
+                    
+                    return actualBlockX - element[0] == -1   && actulaBlockY -  element[1] ==0;//searching for curent block
+                  }))
+                  if ( isDefined(value)){
+                    return -1;
+                  }
+                  return value
+                 
+                }else{
+                  console.log("blok nenalezen");
+                   return -1;//searching was unsuccesfull
+                }
+          /*}else{
+                console.log("blok vuci kteremu se vyhledava neexistuje");
+                return -1;//searching was unsuccesfull
+              }*/
+            
+            
           };
+
           console.log("vypis hodnot")
           console.log(this.blocksF)
+          
           let first =true;
           let originalBlockX,originalBlockY,newBlockX,newBlockY;  
-          
+          let directionRight, directionLeft, directionUp, directionDown;//true false
           let tempDegres;
-          let crosingS=[]
+          let usedCoordinates=[]
+          
           for (let x=0 ; x<this.blocksF.length-1 ;x++){ 
             console.log("zmackl sem tlacitko"+ enumCor.X + " " + enumCor.Y)
             originalBlockX = this.blocksF[x][0];
             originalBlockY = this.blocksF[x][1];
             console.log("original X=" +"[" +originalBlockX+ "]"  + "Y=" + "[" + originalBlockY + "]");
             console.log("____________________________________");
-            newBlockX = this.blocksF[x+1][0];//0=X 
-            newBlockY = this.blocksF[x+1][1];//1=Y
-            console.log("new blok X=" +"[" +newBlockX+ "]"  + "Y="  + "[" + newBlockY + "]");
+            
+            usedCoordinates.push([originalBlockX,originalBlockY]);
+            let blockRight = this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.right);
+            let blockDown = this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down);
+            console.log("pravej block")
+            console.log(blockRight)
+            console.log("down block")
+            console.log(blockDown)
+            console.log("block v pravo" + "X "+ blockRight[0] +" Y: " + blockRight[1] + " block dole " +"X "+ blockDown[0] +" Y: " + blockDown[1] )
 
-            let direction = this.relativDirection(originalBlockX,originalBlockY,newBlockX,newBlockY);
-            if (direction== enumSides.up){
-              console.log("up");
+            for(let y=x; y< this.blocksF ; y++){
+              newBlockX = this.blocksF[y][0];//0=X 
+              newBlockY = this.blocksF[y][1];//1=Y
+              console.log("new blok X=" +"[" +newBlockX+ "]"  + "Y="  + "[" + newBlockY + "]");
 
-            }else if (direction == enumSides.down){
-              console.log("down");
-            }else if (direction == enumSides.left){
-              console.log("left");
-            }else if(direction == enumSides.right){
-              console.log("right");
-            }else{
-              console.log("neco je fakt spatne nespravny smer")
-            }  
-            console.log("****************************")
-          
+              let direction = this.relativDirection(originalBlockX,originalBlockY,newBlockX,newBlockY);
+              if(direction == enumSides.right){
+                console.log("right");
+                directionRight = true;
+                
+              }
+              if (direction == enumSides.down){
+                console.log("down");
+              }
+             
+              if (direction== enumSides.up){
+                console.log("up");
+
+              } else if (direction == enumSides.left){
+                console.log("left");
+              } else{
+                console.log("neco je fakt spatne nespravny smer");
+              }  
+              console.log("****************************");
+            }
           
           }      
           
-          }
+      }
 
             this.addBlock = ( my_table) =>{
             this._getBlocksFromTable(my_table); //get x y coordinates of each block
+            this.blocksF.sort();
             this._getBlockfValues(this.blocksF);
             this._conversionToDegrees();
             testOutput("vypis pole true false")

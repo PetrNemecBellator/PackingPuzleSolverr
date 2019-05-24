@@ -1,0 +1,13 @@
+jdu po levem okraji bloku
+
+1. selektovat blok
+2. najit vsechny jeho sousedy a zapamatovat si jejich souradnice spolu
+s umistenim aktulaniho bloku v poly
+3. vybrat si blok po leve  horni( y - 1{cesta nahoru}, x+1 {cesta dolu}) strane a podle smeru (stareho noveho a 
+budouciho bloku napsat pocet stupnu az 270)
+4. jakmile dojdou bloku do leva dopocitat prave strany az ke krizovadce kde zase pokazde 
+doplnit opacnymi uhly k uhlum puvodnim
+zabocovat v 
+
+doprava a kdyz to de tak porad  dolu pak zase doprava
+kdyz tam nejsou dlasi dalsi bloky tak nahoru a doleva pozor na zmenu pavidel

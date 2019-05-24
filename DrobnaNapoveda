@@ -1,2 +1,34 @@
 1. jit po leve strane
 2. absolutni smer nahoru dolu doleva doprava
+block[X]= 0 [Y]: 1
+x stejne y o 1 dolu 180
+block[X]= 0 [Y]: 2
+x stejne y o 1 dolu 180
+block[X]= 0 [Y]: 3
+x stejne y o 1 dolu 180
+
+block[X]= 1 [Y]: 1
+zvrat
+o x+1 y-2
+spicka y-2 1 90 , 90 
+
+y = -2 = 180,
+x = 1 ==270??
+
+block[X]= 2 [Y]: 1
+x+1 
+doprava 180
+
+block[X]= 2 [Y]: 2
+dolu y + 1 
+90 
+
+pozpatku 
+90 otocka
+270
+90
+270
+270
+180
+180
+180
