@@ -118,14 +118,18 @@ var BlockG =  function(){
                   console.log("kontroluju dolu")
                   let value = (this.blocksF.find(function(element){
                     console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
-                    
-                    return actualBlockX - element[0] == 0   && actulaBlockY -  element[1] == -1;
+                    console.log("aktulani block X: " + actualBlockX + " Y: " + actulaBlockY);
+                    console.log(actualBlockX - element[0]) ;
+                    console.log(actulaBlockY -  element[1]);
+                    console.log( actualBlockX - element[0] == 0   && actulaBlockY -  element[1] == -1);
+                    return actualBlockX-element[0] == 0   && actulaBlockY- element[1] == -1;
                   }))
-
-                  if ( isDefined(value)){
+                  console.log("value");
+                  console.log(""+value)
+                  if ( !isDefined(value)){
                     return -1;
                   }
-                  return value;
+                  return value.slice();
                  
                 }else if(sideYouNeedTofind == enumSides.up){ 
                   console.log("kontroluju nahoru")
@@ -133,31 +137,42 @@ var BlockG =  function(){
                     
                     return actualBlockX - element[0] == 0   && actulaBlockY -  element[1] ==1;
                   }))
-                  if ( isDefined(value)){
+                  if (! isDefined(value)){
                     return -1;
                   }
-                  return value;
+                  return value.slice();
 
                   
                 }else if (sideYouNeedTofind == enumSides.left){
+                  console.log("kontroluju v levo")
                   let value = (this.blocksF.find(function(element){
                     
                     return actualBlockX - element[0] == 1   && actulaBlockY -  element[1] ==0;
                   }))
-                  if ( isDefined(value)){
+                  if ( !isDefined(value)){
                     return -1;
                   }
-                  return value
+                  return value.slice()
                   
                 }else if (sideYouNeedTofind == enumSides.right){
-                  let value =(this.blocksF.find(function(element){
-                    
+                 
+                  console.log("??????????????????????????????????")
+                  console.log("kontroluji v pravo")
+                  console.log("aktualni block X" + actualBlockX + " Y: " + actulaBlockY)
+                  let value = (this.blocksF.find(function(element){
+                    console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
+                    console.log(actualBlockX - element[0] == -1   && actulaBlockY -  element[1] ==0)
                     return actualBlockX - element[0] == -1   && actulaBlockY -  element[1] ==0;//searching for curent block
                   }))
-                  if ( isDefined(value)){
+                  console.log("??????????????????????????????????")
+                  console.log("navratova hodnota "+value);
+                  console.log("" +value)
+                  console.log("value vypsana")
+                  if (! isDefined(value)){
                     return -1;
                   }
-                  return value
+
+                  return value.slice();
                  
                 }else{
                   console.log("blok nenalezen");
@@ -178,8 +193,9 @@ var BlockG =  function(){
           let originalBlockX,originalBlockY,newBlockX,newBlockY;  
           let directionRight, directionLeft, directionUp, directionDown;//true false
           let tempDegres;
-          let usedCoordinates=[]
-          
+          let usedCoordinates=[];
+          let blockRight = [];
+          let blockDown = [];
           for (let x=0 ; x<this.blocksF.length-1 ;x++){ 
             console.log("zmackl sem tlacitko"+ enumCor.X + " " + enumCor.Y)
             originalBlockX = this.blocksF[x][0];
@@ -188,8 +204,8 @@ var BlockG =  function(){
             console.log("____________________________________");
             
             usedCoordinates.push([originalBlockX,originalBlockY]);
-            let blockRight = this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.right);
-            let blockDown = this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down);
+            blockRight.push(this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.right));
+            blockDown.push(this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
             console.log("pravej block")
             console.log(blockRight)
             console.log("down block")
