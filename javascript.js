@@ -145,8 +145,10 @@ var BlockG =  function(){
                   
                 }else if (sideYouNeedTofind == enumSides.left){
                   console.log("kontroluju v levo")
+                  console.log("aktualni block X" + actualBlockX + " Y: " + actulaBlockY)
                   let value = (this.blocksF.find(function(element){
-                    
+                    console.log("---------------------------")  
+                    console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
                     return actualBlockX - element[0] == 1   && actulaBlockY -  element[1] ==0;
                   }))
                   if ( !isDefined(value)){
@@ -160,6 +162,7 @@ var BlockG =  function(){
                   console.log("kontroluji v pravo")
                   console.log("aktualni block X" + actualBlockX + " Y: " + actulaBlockY)
                   let value = (this.blocksF.find(function(element){
+                    console.log("---------------------------")
                     console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
                     console.log(actualBlockX - element[0] == -1   && actulaBlockY -  element[1] ==0)
                     return actualBlockX - element[0] == -1   && actulaBlockY -  element[1] ==0;//searching for curent block
@@ -178,11 +181,6 @@ var BlockG =  function(){
                   console.log("blok nenalezen");
                    return -1;//searching was unsuccesfull
                 }
-          /*}else{
-                console.log("blok vuci kteremu se vyhledava neexistuje");
-                return -1;//searching was unsuccesfull
-              }*/
-            
             
           };
 
@@ -204,39 +202,18 @@ var BlockG =  function(){
             console.log("____________________________________");
             
             usedCoordinates.push([originalBlockX,originalBlockY]);
-            blockRight.push(this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.right));
-            blockDown.push(this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
-            console.log("pravej block")
-            console.log(blockRight)
-            console.log("down block")
-            console.log(blockDown)
-            console.log("block v pravo" + "X "+ blockRight[0] +" Y: " + blockRight[1] + " block dole " +"X "+ blockDown[0] +" Y: " + blockDown[1] )
-
-            for(let y=x; y< this.blocksF ; y++){
-              newBlockX = this.blocksF[y][0];//0=X 
-              newBlockY = this.blocksF[y][1];//1=Y
-              console.log("new blok X=" +"[" +newBlockX+ "]"  + "Y="  + "[" + newBlockY + "]");
-
-              let direction = this.relativDirection(originalBlockX,originalBlockY,newBlockX,newBlockY);
-              if(direction == enumSides.right){
-                console.log("right");
-                directionRight = true;
-                
+            blockRight = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.right));
+            blockDown = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
+            if(blockRight == -1){
+              if(blockDown == -1){
+                //smer nahoru a pak doprava
+              
               }
-              if (direction == enumSides.down){
-                console.log("down");
-              }
-             
-              if (direction== enumSides.up){
-                console.log("up");
-
-              } else if (direction == enumSides.left){
-                console.log("left");
-              } else{
-                console.log("neco je fakt spatne nespravny smer");
-              }  
-              console.log("****************************");
+              
             }
+
+            
+            
           
           }      
           
