@@ -56,6 +56,7 @@ var BlockG =  function(){
         const blockSize= 25;//px?
         this.numberOfSides =0;
         this.blocksF = [];
+        this.degresFormat= [];
         
           
           
@@ -88,7 +89,7 @@ var BlockG =  function(){
             }  
             return;
         }
-        this.degresFormat= [];
+       
 
         this._conversionToDegrees = () =>{
             
@@ -112,8 +113,9 @@ var BlockG =  function(){
               return enumSides.wronSide;
           }
           this.findBlockonSpecificSide =(actualBlockX,actulaBlockY,sideYouNeedTofind) => {
-           
-                console.log("vstupni blok existuje")
+
+                console.log("funkce na hledani sousedniho blocku")
+                console.log("vstupni souradnice X " + actualBlockX + " Y: " + actulaBlockY )
                 if (sideYouNeedTofind == enumSides.down){
                   console.log("kontroluju dolu")
                   let value = (this.blocksF.find(function(element){
@@ -189,33 +191,65 @@ var BlockG =  function(){
           
           let first =true;
           let originalBlockX,originalBlockY,newBlockX,newBlockY;  
-          let directionRight, directionLeft, directionUp, directionDown;//true false
-          let tempDegres;
+          let blockUp,blockDown, blockRight , blockLeft;        
           let usedCoordinates=[];
-          let blockRight = [];
-          let blockDown = [];
-          for (let x=0 ; x<this.blocksF.length-1 ;x++){ 
-            console.log("zmackl sem tlacitko"+ enumCor.X + " " + enumCor.Y)
-            originalBlockX = this.blocksF[x][0];
-            originalBlockY = this.blocksF[x][1];
+         
+
+          originalBlockX = this.blocksF[0][enumCor.X];//coordinates where searching have begun
+          originalBlockY = this.blocksF[0][enumCor.Y ];//
+
             console.log("original X=" +"[" +originalBlockX+ "]"  + "Y=" + "[" + originalBlockY + "]");
             console.log("____________________________________");
             
             usedCoordinates.push([originalBlockX,originalBlockY]);
-            blockRight = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.right));
             blockDown = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
-            if(blockRight == -1){
-              if(blockDown == -1){
-                //smer nahoru a pak doprava
-              
+            
+            console.log("block down check")
+            console.log(blockDown);           
+            console.log();
+            console.log("||||||||||||||||||||||||||||||||||||||||||");
+            console.log("hledaci smycka");
+
+            if(blockDown != -1){
+              do{
+                this.degresFormat.push(180);  
+                blockDown = (this.findBlockonSpecificSide(blockDown[enumCor.X],blockDown[enumCor.Y],enumSides.down));
+                console.log("block down kontrola")
+                //hledani dolu  
               }
+              while (blockDown != -1)
+              //otocka zpatky abych mohl hledat nahoru
+              this.degresFormat.push(90);
               
+              blockUp = blockDown;//slice ?????
+              
+              do{
+                 
+                blockUp = (this.findBlockonSpecificSide(blockUp[enumCor.X],blockUp[enumCor.Y],enumSides.up));
+                //searching back up and right (could be improved but.....)
+                if ( (this.findBlockonSpecificSide(blockUp[enumCor.X],blockUp[enumCor.Y],enumSides.right) != -1)){
+                  //right block on right side 
+                  this.degresFormat.push(270);
+
+                  break;
+                }
+                this.degresFormat.push(180);
+
+              }
+              while (blockUp != -1)
+              console.log("degress format")
+              console.log(this.degresFormat)
+
+
+
             }
+              
+            
 
             
             
           
-          }      
+                
           
       }
 
