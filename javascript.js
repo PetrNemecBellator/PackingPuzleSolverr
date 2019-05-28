@@ -121,7 +121,7 @@ var BlockG =  function(){
                   let value = (this.blocksF.find(function(element){
                     console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
                     console.log("aktulani block X: " + actualBlockX + " Y: " + actulaBlockY);
-                    console.log(actualBlockX - element[0]) ;
+                    console.log(actualBlockX - element[0]);
                     console.log(actulaBlockY -  element[1]);
                     console.log( actualBlockX - element[0] == 0   && actulaBlockY -  element[1] == -1);
                     return actualBlockX-element[0] == 0   && actulaBlockY- element[1] == -1;
@@ -190,6 +190,8 @@ var BlockG =  function(){
           console.log(this.blocksF)
           
           let first =true;
+          let rightSideBool = false; //true false bool
+          let leftSideBool = false;
           let originalBlockX,originalBlockY,newBlockX,newBlockY;  
           let blockUp,blockDown, blockRight , blockLeft;        
           let usedCoordinates=[];
@@ -212,10 +214,33 @@ var BlockG =  function(){
 
             if(blockDown != -1){
               do{
+                //hledani dolu  
                 this.degresFormat.push(180);  
                 blockDown = (this.findBlockonSpecificSide(blockDown[enumCor.X],blockDown[enumCor.Y],enumSides.down));
-                console.log("block down kontrola")
-                //hledani dolu  
+                if (this.findblockonSpecificSide(blockDown[enumCor.X],blockDown[enumCor.Y], enumSides.left) != -1){
+                  let tempSide = blockDown;
+
+                  this.degresFormat.push(270)
+                  let numberOfContinusSides = 0;
+                  blockLeft = this.findBlockonspecificSide(blockDown[enumCor.X],blockDown[enumCor.Y], enumSides.left);
+
+                  do{
+                    numberOfContinusSides++;
+                    this.degresFormat.push(180);
+                    blockLeft = this.findBlockonSpecificSide(blockLeft[enumCor.X],blockLeft[enumCor.Y], enumSides.left);
+
+                    
+                  }while(blockLeft != -1);  
+                  
+                  this.degresFormat.push(90);
+                  this.degresFormat.push(90);
+
+                  for(let x=0; x<numberOfContinusSides+1 ; x++){
+                    this.degresFormat.push(180);  
+                  }
+                  blockDown = tempSide;
+
+                }
               }
               while (blockDown != -1)
               //otocka zpatky abych mohl hledat nahoru
@@ -230,7 +255,7 @@ var BlockG =  function(){
                 if ( (this.findBlockonSpecificSide(blockUp[enumCor.X],blockUp[enumCor.Y],enumSides.right) != -1)){
                   //right block on right side 
                   this.degresFormat.push(270);
-
+                  rightSideBool = true;
                   break;
                 }
                 this.degresFormat.push(180);
@@ -239,8 +264,20 @@ var BlockG =  function(){
               while (blockUp != -1)
               console.log("degress format")
               console.log(this.degresFormat)
+              
+              if(rightSideBool){
+                blockRight = blockUp;
+                do{
+                  this.degresFormat.push(180);
+                  blockRight = this.findBlockonSpecificSide(blockUp[enumCor.X],blockUp[enumCor.Y],enumSides.right);
+                  
+
+                }while(blockRight != -1)
 
 
+              }else{
+
+              }
 
             }
               
