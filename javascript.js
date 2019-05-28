@@ -61,7 +61,7 @@ var BlockG =  function(){
           
           
         this.addrealBlock = () =>{
-            this.blocksF.sort();
+           // this.blocksF.sort(0);
             for (let i = 0 ; i < this.blocksF.length; i ++){
               this.blocksF[0].sort(); 
             }
@@ -81,12 +81,15 @@ var BlockG =  function(){
                 continue;
               }
               //collumsI = Xpos , rowI = Ypos
-                this.blocksF.push([collumsI,rowI]);
-                console.log("true". rowI ," " ,collumsI);
+                this.blocksF.push([     [(collumsI.valueOf()),(rowI.valueOf())],    [((collumsI+1).valueOf()),(rowI.valueOf())],
+                                    [ ((collumsI+1).valueOf()) , ( (rowI+1).valueOf()) ],[( (collumsI).valueOf() ) , ((rowI+1).valueOf())] ]);
+                
                 continue;
 
               }
-            }  
+            }
+            console.log("vypis hodnot")
+            console.log(this.blocksF)  
             return;
         }
        
@@ -185,114 +188,80 @@ var BlockG =  function(){
                 }
             
           };
+         
+          enumSidesBetterVersion={
+            left: [-1,0],
+            right: [1,0],
+            up: [0,-1],
+            down:[0,1]  
 
+          };
+
+          this.numberNeiberOfBlocks =(blockX,blockY) =>{
+            console.log("neibour blocks function");
+            console.log("block X: " + blockX + " Y: " + blockY);
+            
+            let rowL = this.blocksF.length;
+            let numberOfSides = 0;
+            for (let row = 0 ; row < rowL ; row++){
+                for (let nextL =0 ; nextL < this.blocksF[row].length; nextL++){
+                  console.log("porovnavany block: X : " + this.blocksF[row][nextL][enumCor.X]+
+                  " Y: " + this.blocksF[row][nextL][enumCor.Y] );
+                  
+              
+                  if ((this.blocksF[row][nextL][enumCor.X] == blockX) && (this.blocksF[row][nextL][enumCor.Y])){
+                    numberOfSides++;
+                    continue;
+                  }
+                  
+                
+            }
+            return numberOfSides;
+          
+           }    
+         }
+      
           console.log("vypis hodnot")
           console.log(this.blocksF)
+          let directionNub = 0
+          let clockWiseDirection = [enumSidesBetterVersion.right,enumSidesBetterVersion.down,enumSidesBetterVersion.left, enumSidesBetterVersion.up];
+          this.changeOfDirection = (number)=>{
+            if (number < 0) return numberOfSides.length +1+ number; 
+            return number%clockWiseDirection.length
+          };
+
           
+
           let first =true;
           let rightSideBool = false; //true false bool
           let leftSideBool = false;
           let originalBlockX,originalBlockY,newBlockX,newBlockY;  
           let blockUp,blockDown, blockRight , blockLeft;        
-          let usedCoordinates=[];
          
+         clockWiseDirection[directionNub][enumCor.X]
 
-          originalBlockX = this.blocksF[0][enumCor.X];//coordinates where searching have begun
-          originalBlockY = this.blocksF[0][enumCor.Y ];//
+          originalBlockX = this.blocksF[0][0][enumCor.X];//coordinates where searching have begun
+          originalBlockY = this.blocksF[0][0][enumCor.Y ];//
+          
+          console.log("originalX " + originalBlockX);
+          console.log("originalY " +originalBlockY);
+          console.log("block direc: " + clockWiseDirection[directionNub][enumCor.X])
+          console.log("block direc: " + clockWiseDirection[directionNub][enumCor.Y])
 
-            console.log("original X=" +"[" +originalBlockX+ "]"  + "Y=" + "[" + originalBlockY + "]");
-            console.log("____________________________________");
-            
-            usedCoordinates.push([originalBlockX,originalBlockY]);
-            blockDown = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
-            
+          let numb =this.numberNeiberOfBlocks(originalBlockX +clockWiseDirection[directionNub][enumCor.X], originalBlockY + clockWiseDirection[directionNub][enumCor.Y]);
+          console.log("pocet sousednich " + numb);  
+          
+           // blockDown = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
+            /*
             console.log("block down check")
             console.log(blockDown);           
             console.log();
             console.log("||||||||||||||||||||||||||||||||||||||||||");
             console.log("hledaci smycka");
-
-            if(blockDown != -1){
-              do{
-                //hledani dolu 
-                this.degresFormat.push(180);  
-                blockDown = (this.findBlockonSpecificSide(blockDown[enumCor.X],blockDown[enumCor.Y],enumSides.down));
-                if (this.findblockonSpecificSide(blockDown[enumCor.X],blockDown[enumCor.Y], enumSides.left) != -1){
-                  //nasel jsem block v levo
-                  let tempSide = blockDown;
-
-                  this.degresFormat.push(270);
-                  blockLeft = this.findBlockonspecificSide(blockDown[enumCor.X],blockDown[enumCor.Y], enumSides.left);
-
-                  do{
-                    this.degresFormat.push(180);
-                    blockLeft = this.findBlockonSpecificSide(blockLeft[enumCor.X],blockLeft[enumCor.Y], enumSides.left);
-                  }while(blockLeft != -1);  
-                  
-                  this.degresFormat.push(90);
-                  this.degresFormat.push(90);
-                  blockRight = blockLeft;
-                  do{
-                    this.degresFormat.push(180);
-                    blockRight = this.findBlockonSpecificSide(blockRight[enumCor.X],blockRight[enumCor.Y], enumSides.right);
-                    if(this.findBlockonSpecificSide(blockRight[enumCor.X],blockRight[enumCor.Y],enumSides.down) != -1)
-                    {
-                      break;
-                    }
-                  }while(blockRight != -1);
-
-                  blockDown = tempSide;
-
-                }
-              }
-              while (blockDown != -1)
-              //otocka zpatky abych mohl hledat nahoru
-              this.degresFormat.push(90);
-              
-              blockUp = blockDown;//slice ?????
-              
-              do{
-                 
-                blockUp = (this.findBlockonSpecificSide(blockUp[enumCor.X],blockUp[enumCor.Y],enumSides.up));
-                //searching back up and right (could be improved but.....)
-                if ( (this.findBlockonSpecificSide(blockUp[enumCor.X],blockUp[enumCor.Y],enumSides.right) != -1)){
-                  //right block on right side 
-                  this.degresFormat.push(270);
-                  rightSideBool = true;
-                  break;
-                }
-                this.degresFormat.push(180);
-
-              }
-              while (blockUp != -1)
-              console.log("degress format")
-              console.log(this.degresFormat)
-              
-              if(rightSideBool){
-                blockRight = blockUp;
-                do{
-                  this.degresFormat.push(180);
-                  blockRight = this.findBlockonSpecificSide(blockUp[enumCor.X],blockUp[enumCor.Y],enumSides.right);
-                  
-
-                }while(blockRight != -1)
-
-
-              }else{
-
-              }
-
-            }
-              
-            
-
-            
-            
-          
-                
-          
-      }
-
+*/
+         
+    }
+    
             this.addBlock = ( my_table) =>{
             this._getBlocksFromTable(my_table); //get x y coordinates of each block
             this.blocksF.sort();
@@ -310,12 +279,18 @@ var BlockG =  function(){
               let rowL = array.length;
               
               for (let row = 0 ; row < rowL ; row++){
-                
-                  testOutput("<li>block<b>[X]</b>= "+ array[row][0] +" <b> [Y]: </b>"+ array[row][1]) + "</li>";  
-                  
-                
+                testOutput("???????????????????????????????????????????? ");
+                console.log("--------------------------------------------");
+
+                  for (let nextL =0 ; nextL < array[row].length; nextL++){
+                    console.log( "X"+ array[row][nextL][0] + "  Y:"+ array[row][nextL][1] );
+                    testOutput("X"+ array[row][nextL][0] + "  Y:"+ array[row][nextL][1]);
+                  }
+                  console.log();
+                  console.log("--------------------------------------------");
                 
               }
+              testOutput("???????????????????????????????????????????? ");             
               testOutput("<br>")
               return;
             }
@@ -374,4 +349,5 @@ function create_cell(){
         }
       }
     }
+ 
 }
