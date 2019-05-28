@@ -214,30 +214,33 @@ var BlockG =  function(){
 
             if(blockDown != -1){
               do{
-                //hledani dolu  
+                //hledani dolu 
                 this.degresFormat.push(180);  
                 blockDown = (this.findBlockonSpecificSide(blockDown[enumCor.X],blockDown[enumCor.Y],enumSides.down));
                 if (this.findblockonSpecificSide(blockDown[enumCor.X],blockDown[enumCor.Y], enumSides.left) != -1){
+                  //nasel jsem block v levo
                   let tempSide = blockDown;
 
-                  this.degresFormat.push(270)
-                  let numberOfContinusSides = 0;
+                  this.degresFormat.push(270);
                   blockLeft = this.findBlockonspecificSide(blockDown[enumCor.X],blockDown[enumCor.Y], enumSides.left);
 
                   do{
-                    numberOfContinusSides++;
                     this.degresFormat.push(180);
                     blockLeft = this.findBlockonSpecificSide(blockLeft[enumCor.X],blockLeft[enumCor.Y], enumSides.left);
-
-                    
                   }while(blockLeft != -1);  
                   
                   this.degresFormat.push(90);
                   this.degresFormat.push(90);
+                  blockRight = blockLeft;
+                  do{
+                    this.degresFormat.push(180);
+                    blockRight = this.findBlockonSpecificSide(blockRight[enumCor.X],blockRight[enumCor.Y], enumSides.right);
+                    if(this.findBlockonSpecificSide(blockRight[enumCor.X],blockRight[enumCor.Y],enumSides.down) != -1)
+                    {
+                      break;
+                    }
+                  }while(blockRight != -1);
 
-                  for(let x=0; x<numberOfContinusSides+1 ; x++){
-                    this.degresFormat.push(180);  
-                  }
                   blockDown = tempSide;
 
                 }
