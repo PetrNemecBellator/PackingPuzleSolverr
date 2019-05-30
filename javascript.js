@@ -198,18 +198,15 @@ var BlockG =  function(){
           };
 
           this.numberNeiberOfBlocks =(blockX,blockY) =>{
+            console.log();
             console.log("/t searching for neighbors");
-            console.log("/t block X: " + blockX + " Y: " + blockY);
+            console.log("/t pozice block X: " + blockX + " Y: " + blockY);
             
             let rowL = this.blocksF.length;
-            console.log("number of blocks: "+ rowL )
             let numberOfSides = 0;
             for (let row = 0 ; row < rowL ; row++)
             {
-                console.log("POCET SOURADNIC " + this.blocksF[row].length);
                 for (let nextL =0 ; nextL < this.blocksF[row].length; nextL++){
-                  console.log("/t/t porovnavany block: X : " + this.blocksF[row][nextL][enumCor.X] +
-                  " Y: " + this.blocksF[row][nextL][enumCor.Y] );
                   
               
                   if ((this.blocksF[row][nextL][enumCor.X] == blockX) && (this.blocksF[row][nextL][enumCor.Y])){
@@ -219,6 +216,7 @@ var BlockG =  function(){
             }
            } 
            console.log("/t/t/t numbero of nighbors: " + numberOfSides)
+           console.log();
            return numberOfSides;   
          }
       
@@ -256,14 +254,17 @@ var BlockG =  function(){
           let terminator = 0;
           console.log(( newBlockX)  + " "+( newBlockY))
 
-          console.log((originalBlockX =! newBlockX)  + " "+(originalBlockY =! newBlockY))
-          while((originalBlockX =! newBlockX) ||(originalBlockY =! newBlockY)){
+          console.log((originalBlockX !=  newBlockX)  + " "+(originalBlockY !=  newBlockY))
+          while((originalBlockX != newBlockX) ||(originalBlockY != newBlockY)){
             terminator ++;
             if (!firstRun){
               numb =this.numberNeiberOfBlocks(newBlockX , newBlockY );              
               firstRun  = false;              
             }else{
+              console.log();
+              console.log("#########################################33");
               console.log("next run")
+
               numb =this.numberNeiberOfBlocks(newBlockX +clockWiseDirection[directionNub][enumCor.X], newBlockY + clockWiseDirection[directionNub][enumCor.Y]);              
             }          
 
@@ -278,17 +279,21 @@ var BlockG =  function(){
               console.log("direction number is: " + directionNub );
 
             }else if(numb == 1  ){
+              console.log("zmena smeru skrrra" );              
               if(numberOfNeighborBlocks == 0){
                 //probadly something wrong
 
               }else{
                 this.degresFormat.push(numberOfNeighborBlocks);
               }
+
               this.degresFormat.push(90);
               directionNub = this.changeOfDirection(directionNub+1)
               console.log("actual direction is: " + directionNub);
-              
+              numberOfNeighborBlocks = 0;  
+              firstNeighbor = true;            
             }else if(numb == 3){
+
               if(numberOfNeighborBlocks == 0){
                 //probadly something wrong
 
@@ -298,10 +303,13 @@ var BlockG =  function(){
               this.degresFormat.push(270);
               directionNub = this.changeOfDirection(directionNub-1);
               console.log("actual direction is: " + directionNub);
+              numberOfNeighborBlocks = 0;
+              firstNeighbor = true;
             }
             console.log(" direction X: " + newBlockX);
             console.log(" direction Y: " + newBlockY);
             console.log("direction numb: "+ directionNub)
+            console.log("original block X:" + originalBlockX + " Y: " +  originalBlockY);
             newBlockX = newBlockX + clockWiseDirection[directionNub][enumCor.X];
             newBlockY = newBlockY + clockWiseDirection[directionNub][enumCor.Y];
             console.log("direction for next run X: " + newBlockX);
@@ -312,7 +320,7 @@ var BlockG =  function(){
            //if (terminator == 100) break;
           }
           console.log("end of conversion");
-          console.log((originalBlockX =! newBlockX) ||(originalBlockY =! newBlockY))
+          console.log((originalBlockX != newBlockX) ||(originalBlockY != newBlockY))
           
            // blockDown = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
             /*
