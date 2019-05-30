@@ -206,12 +206,14 @@ var BlockG =  function(){
             let numberOfSides = 0;
             for (let row = 0 ; row < rowL ; row++)
             {
+                console.log();
                 for (let nextL =0 ; nextL < this.blocksF[row].length; nextL++){
                   
-              
-                  if ((this.blocksF[row][nextL][enumCor.X] == blockX) && (this.blocksF[row][nextL][enumCor.Y])){
+                  console.log("/t     pozice noveho block X: " + this.blocksF[row][nextL][enumCor.X]  + " Y: " + this.blocksF[row][nextL][enumCor.Y] );
+                  if ( (this.blocksF[row][nextL][enumCor.X] == blockX) && (this.blocksF[row][nextL][enumCor.Y])==blockY   ){
                     numberOfSides++; 
-                  }
+                }
+                console.log();
 
             }
            } 
@@ -226,7 +228,13 @@ var BlockG =  function(){
           let clockWiseDirection = [enumSidesBetterVersion.right,enumSidesBetterVersion.down,enumSidesBetterVersion.left, enumSidesBetterVersion.up];
           
           this.changeOfDirection = (number)=>{
-            if (number < 0) return numberOfSides.length +1+ number; 
+
+            if (number < 0){ 
+              console.log("index of direction: " +clockWiseDirection.length +1+ number);
+              return clockWiseDirection.length +1+ number; 
+            
+            }
+            console.log("index of direction: "+number%clockWiseDirection.length);
             return number%clockWiseDirection.length
           };
 
@@ -252,24 +260,29 @@ var BlockG =  function(){
           let firstNeighbor = true;
           let numberOfNeighborBlocks= 0;
           let terminator = 0;
+          let Numberof90dAngles = 0;
           console.log(( newBlockX)  + " "+( newBlockY))
 
           console.log((originalBlockX !=  newBlockX)  + " "+(originalBlockY !=  newBlockY))
+        
           while((originalBlockX != newBlockX) ||(originalBlockY != newBlockY)){
-            terminator ++;
+            terminator++;
+           
             if (!firstRun){
               numb =this.numberNeiberOfBlocks(newBlockX , newBlockY );              
               firstRun  = false;              
             }else{
               console.log();
-              console.log("#########################################33");
-              console.log("next run")
-
+              console.log("#########################################");
+              console.log("next run");
+              
               numb =this.numberNeiberOfBlocks(newBlockX +clockWiseDirection[directionNub][enumCor.X], newBlockY + clockWiseDirection[directionNub][enumCor.Y]);              
             }          
-
+            
             console.log("pocet sousednich " + numb);  
+            
             if(numb == 2){ 
+            
               if(firstNeighbor){
                 firstNeighbor = false;
                 numberOfNeighborBlocks +=2;
@@ -279,19 +292,23 @@ var BlockG =  function(){
               console.log("direction number is: " + directionNub );
 
             }else if(numb == 1  ){
+              Numberof90dAngles ++;
               console.log("zmena smeru skrrra" );              
+              
               if(numberOfNeighborBlocks == 0){
                 //probadly something wrong
 
               }else{
                 this.degresFormat.push(numberOfNeighborBlocks);
+                numberOfNeighborBlocks = 0;
               }
-
+              
               this.degresFormat.push(90);
+
               directionNub = this.changeOfDirection(directionNub+1)
               console.log("actual direction is: " + directionNub);
-              numberOfNeighborBlocks = 0;  
-              firstNeighbor = true;            
+              numberOfNeighborBlocks = 1;
+             // firstNeighbor = false;            
             }else if(numb == 3){
 
               if(numberOfNeighborBlocks == 0){
@@ -299,13 +316,15 @@ var BlockG =  function(){
 
               }else{
                 this.degresFormat.push(numberOfNeighborBlocks);
+                numberOfNeighborBlocks = 0;
               }
               this.degresFormat.push(270);
               directionNub = this.changeOfDirection(directionNub-1);
               console.log("actual direction is: " + directionNub);
               numberOfNeighborBlocks = 0;
-              firstNeighbor = true;
+            //  firstNeighbor = false;
             }
+
             console.log(" direction X: " + newBlockX);
             console.log(" direction Y: " + newBlockY);
             console.log("direction numb: "+ directionNub)
@@ -317,8 +336,12 @@ var BlockG =  function(){
             
             console.log("directions: " + this.degresFormat);
            //infinite loop
-           //if (terminator == 100) break;
+            if (terminator == 100) {
+              console.log("terminator pif paf")
+              break;
+            }
           }
+      
           console.log("end of conversion");
           console.log((originalBlockX != newBlockX) ||(originalBlockY != newBlockY))
           
