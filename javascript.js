@@ -202,24 +202,24 @@ var BlockG =  function(){
             console.log("/t block X: " + blockX + " Y: " + blockY);
             
             let rowL = this.blocksF.length;
+            console.log("number of blocks: "+ rowL )
             let numberOfSides = 0;
-            for (let row = 0 ; row < rowL ; row++){
+            for (let row = 0 ; row < rowL ; row++)
+            {
+                console.log("POCET SOURADNIC " + this.blocksF[row].length);
                 for (let nextL =0 ; nextL < this.blocksF[row].length; nextL++){
                   console.log("/t/t porovnavany block: X : " + this.blocksF[row][nextL][enumCor.X] +
                   " Y: " + this.blocksF[row][nextL][enumCor.Y] );
                   
               
                   if ((this.blocksF[row][nextL][enumCor.X] == blockX) && (this.blocksF[row][nextL][enumCor.Y])){
-                    numberOfSides++;
-                    continue;
+                    numberOfSides++; 
                   }
-                  
-                
+
             }
-            console.log("/t/t/t numbero of nighbors: " + numberOfSides)
-            return numberOfSides;
-          
-           }    
+           } 
+           console.log("/t/t/t numbero of nighbors: " + numberOfSides)
+           return numberOfSides;   
          }
       
           console.log("vypis hodnot")
@@ -246,31 +246,36 @@ var BlockG =  function(){
           console.log("block direc: " + clockWiseDirection[directionNub][enumCor.X])
           console.log("block direc: " + clockWiseDirection[directionNub][enumCor.Y])
 
-          newBlockX = originalBlockX + clockWiseDirection[directionNub][enumCor.X];
-          newBlockY = originalBlockY + clockWiseDirection[directionNub][enumCor.Y];
+          newBlockX = originalBlockX + 1;
+          newBlockY = originalBlockY + 0;
           
           let firstRun = false;;
           let numb;
           let firstNeighbor = true;
           let numberOfNeighborBlocks= 0;
-          console.log((originalBlockX =! newBlockX)  + " "+(originalBlockX =! newBlockY))
-          while((originalBlockX =! newBlockX) ||(originalBlockX =! newBlockY)){
+          let terminator = 0;
+          console.log(( newBlockX)  + " "+( newBlockY))
+
+          console.log((originalBlockX =! newBlockX)  + " "+(originalBlockY =! newBlockY))
+          while((originalBlockX =! newBlockX) ||(originalBlockY =! newBlockY)){
+            terminator ++;
             if (!firstRun){
               numb =this.numberNeiberOfBlocks(newBlockX , newBlockY );              
-              firstRun  = true;              
+              firstRun  = false;              
             }else{
+              console.log("next run")
               numb =this.numberNeiberOfBlocks(newBlockX +clockWiseDirection[directionNub][enumCor.X], newBlockY + clockWiseDirection[directionNub][enumCor.Y]);              
-            }
-            
+            }          
 
             console.log("pocet sousednich " + numb);  
-            if(numb == 2){ // mam jednoho soudesa
+            if(numb == 2){ 
               if(firstNeighbor){
                 firstNeighbor = false;
                 numberOfNeighborBlocks +=2;
               }else{
                 numberOfNeighborBlocks++;
               }
+              console.log("direction number is: " + directionNub );
 
             }else if(numb == 1  ){
               if(numberOfNeighborBlocks == 0){
@@ -282,6 +287,7 @@ var BlockG =  function(){
               this.degresFormat.push(90);
               directionNub = this.changeOfDirection(directionNub+1)
               console.log("actual direction is: " + directionNub);
+              
             }else if(numb == 3){
               if(numberOfNeighborBlocks == 0){
                 //probadly something wrong
@@ -293,10 +299,20 @@ var BlockG =  function(){
               directionNub = this.changeOfDirection(directionNub-1);
               console.log("actual direction is: " + directionNub);
             }
+            console.log(" direction X: " + newBlockX);
+            console.log(" direction Y: " + newBlockY);
+            console.log("direction numb: "+ directionNub)
             newBlockX = newBlockX + clockWiseDirection[directionNub][enumCor.X];
             newBlockY = newBlockY + clockWiseDirection[directionNub][enumCor.Y];
-            break; //infinite loop
+            console.log("direction for next run X: " + newBlockX);
+            console.log("direction for next run Y: " + newBlockY);
+            
+            console.log("directions: " + this.degresFormat);
+           //infinite loop
+           //if (terminator == 100) break;
           }
+          console.log("end of conversion");
+          console.log((originalBlockX =! newBlockX) ||(originalBlockY =! newBlockY))
           
            // blockDown = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
             /*
