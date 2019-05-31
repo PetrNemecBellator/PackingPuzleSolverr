@@ -65,22 +65,23 @@ $ hledam do prava a kontoluji dolu
     nasel jsem doprava 270
     jisto ta ze kontoluji od spravneho blocku ??????????????????
     hledam do prava a kontoluji dolu 
-    nasel jsem dolu 
-    $ hledam dolu a kontoluji do leva 180
-    konec dolu i do leva
-    90
-    $ hledam do prava kontoluji dolu
-    nic dole 
-    180
-    konec prava
-    hledam nahoru a do prava
-    nic nahore (90) ani v pravo (90)
-    konec prava
-    90 90
-    definitivni protismer                       sakra
-    $hledam do leva a kontoluji nahoru 
-    najdu doleva a nahoru 270
-    $ hledam nahoru a kontoluji do prava (180)
-    konec nahoru 
+        nasel jsem dolu 
+        $ hledam dolu a kontoluji do leva 180
+        konec dolu i do leva
+        90
+        $ hledam do prava kontoluji dolu
+        nic dole 
+        180
+        konec prava
+        hledam nahoru a do prava
+        nic nahore (90) ani v pravo (90)
+        konec prava
+        90 90
+        definitivni protismer                       sakra
+        $hledam do leva a kontoluji nahoru 
+        najdu doleva a nahoru 270
+        $ hledam nahoru a kontoluji do prava (180)
+        konec nahoru 
+        
         
 
