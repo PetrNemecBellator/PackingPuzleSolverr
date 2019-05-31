@@ -95,101 +95,7 @@ var BlockG =  function(){
        
 
         this._conversionToDegrees = () =>{
-            
-            this.relativDirection = function(originalBlockX,originalBlockY , newBlockX , newBlockY){
-            if(originalBlockY == newBlockY ){
-              if (originalBlockX - newBlockX == -1  ){
-                return enumSides.right;
-              }
-              if (originalBlockX - newBlockX == 1){
-                return enumSides.left;
-              }
-            }
-            if (originalBlockX == newBlockX){
-              if (originalBlockY - newBlockY == -1 ){
-                return enumSides.down;
-              }
-              if(originalBlockY - newBlockY == 1){
-                return enumSides.up;
-              }
-            } 
-              return enumSides.wronSide;
-          }
-          this.findBlockonSpecificSide =(actualBlockX,actulaBlockY,sideYouNeedTofind) => {
-
-                console.log("funkce na hledani sousedniho blocku")
-                console.log("vstupni souradnice X " + actualBlockX + " Y: " + actulaBlockY )
-                if (sideYouNeedTofind == enumSides.down){
-                  console.log("kontroluju dolu")
-                  let value = (this.blocksF.find(function(element){
-                    console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
-                    console.log("aktulani block X: " + actualBlockX + " Y: " + actulaBlockY);
-                    console.log(actualBlockX - element[0]);
-                    console.log(actulaBlockY -  element[1]);
-                    console.log( actualBlockX - element[0] == 0   && actulaBlockY -  element[1] == -1);
-                    return actualBlockX-element[0] == 0   && actulaBlockY- element[1] == -1;
-                  }))
-                  console.log("value");
-                  console.log(""+value)
-                  if ( !isDefined(value)){
-                    return -1;
-                  }
-                  return value.slice();
-                 
-                }else if(sideYouNeedTofind == enumSides.up){ 
-                  console.log("kontroluju nahoru")
-                  let value = (this.blocksF.find(function(element){
-                    
-                    return actualBlockX - element[0] == 0   && actulaBlockY -  element[1] ==1;
-                  }))
-                  if (! isDefined(value)){
-                    return -1;
-                  }
-                  return value.slice();
-
-                  
-                }else if (sideYouNeedTofind == enumSides.left){
-                  console.log("kontroluju v levo")
-                  console.log("aktualni block X" + actualBlockX + " Y: " + actulaBlockY)
-                  let value = (this.blocksF.find(function(element){
-                    console.log("---------------------------")  
-                    console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
-                    return actualBlockX - element[0] == 1   && actulaBlockY -  element[1] ==0;
-                  }))
-                  if ( !isDefined(value)){
-                    return -1;
-                  }
-                  return value.slice()
-                  
-                }else if (sideYouNeedTofind == enumSides.right){
-                 
-                  console.log("??????????????????????????????????")
-                  console.log("kontroluji v pravo")
-                  console.log("aktualni block X" + actualBlockX + " Y: " + actulaBlockY)
-                  let value = (this.blocksF.find(function(element){
-                    console.log("---------------------------")
-                    console.log("porovnavany block X" + element[0]+ " porovnavany block Y" + element[1])
-                    console.log(actualBlockX - element[0] == -1   && actulaBlockY -  element[1] ==0)
-                    return actualBlockX - element[0] == -1   && actulaBlockY -  element[1] ==0;//searching for curent block
-                  }))
-                  console.log("??????????????????????????????????")
-                  console.log("navratova hodnota "+value);
-                  console.log("" +value)
-                  console.log("value vypsana")
-                  if (! isDefined(value)){
-                    return -1;
-                  }
-
-                  return value.slice();
-                 
-                }else{
-                  console.log("blok nenalezen");
-                   return -1;//searching was unsuccesfull
-                }
-            
-          };
-         
-          enumSidesBetterVersion={
+         enumSidesBetterVersion={
             left: [-1,0],
             right: [1,0],
             up: [0,-1],
@@ -201,7 +107,6 @@ var BlockG =  function(){
             console.log();
             console.log("/t searching for neighbors");
             console.log("/t pozice block X: " + blockX + " Y: " + blockY);
-            
             let rowL = this.blocksF.length;
             let numberOfSides = 0;
             for (let row = 0 ; row < rowL ; row++)
@@ -217,8 +122,7 @@ var BlockG =  function(){
 
             }
            } 
-          /* console.log("/t/t/t numbero of nighbors: " + numberOfSides)
-           console.log();*/
+         
            return numberOfSides;   
          }
       
@@ -284,14 +188,21 @@ var BlockG =  function(){
             
             console.log("pocet sousednich " + numb);  
             
-            if(numb == 2){ 
+            if(numb == 2){ //180
             
-              if(firstNeighbor){
+             /* if(firstNeighbor){
                 firstNeighbor = false;
                 numberOfNeighborBlocks +=2;
               }else{
                 numberOfNeighborBlocks++;
+              }*/
+              if(numberOfNeighborBlocks ==0){
+                numberOfNeighborBlocks+=2;
+              }else{
+                numberOfNeighborBlocks++;
               }
+              
+
               console.log("direction number is: " + directionNub );
 
             }else if(numb == 1  ){
@@ -300,27 +211,28 @@ var BlockG =  function(){
               
               if(numberOfNeighborBlocks == 0){
                 //probadly something wrong
+                numberOfNeighborBlocks++;
 
-              }else{
-               
               }
+
               this.degresFormat.push(numberOfNeighborBlocks);
-              numberOfNeighborBlocks = 0;
               this.degresFormat.push(90);
 
               directionNub = this.changeOfDirection(directionNub+1)
               console.log("actual direction is: " + directionNub);
-              numberOfNeighborBlocks = 1;
+              numberOfNeighborBlocks = 0;
              // firstNeighbor = false;            
-            }else if(numb == 3){
+          
+            }else if(numb == 3){//270
               console.log(" number: " + numberOfNeighborBlocks)
 
               if(numberOfNeighborBlocks == 0){
                 //probadly something wrong
-                
                 numberOfNeighborBlocks+=1;
 
               }
+    
+              
               console.log(" number: " + numberOfNeighborBlocks)
 
               this.degresFormat.push(numberOfNeighborBlocks);
@@ -328,7 +240,7 @@ var BlockG =  function(){
               
               directionNub = this.changeOfDirection(directionNub-1);
               console.log("actual direction is: " + directionNub);
-              numberOfNeighborBlocks = 1;
+              numberOfNeighborBlocks = 0;
             //  firstNeighbor = false;
             }
 
@@ -343,12 +255,15 @@ var BlockG =  function(){
             
             console.log("directions: " + this.degresFormat);
            //infinite loop
-            if (terminator == 100) {
+          /*  if (terminator == 100) {
               console.log("terminator pif paf")
               break;
-            }
+            }*/
           }
           console.log("push hodnoty: " + numberOfNeighborBlocks );
+          if(numberOfNeighborBlocks == 0){
+            numberOfNeighborBlocks++;
+          }
           this.degresFormat.push(numberOfNeighborBlocks);
           this.degresFormat.push(90);
           console.log()
@@ -356,16 +271,7 @@ var BlockG =  function(){
           console.log("end of conversion ?????");
           
           console.log((originalBlockX != newBlockX) ||(originalBlockY != newBlockY))
-          
-           // blockDown = (this.findBlockonSpecificSide(originalBlockX,originalBlockY,enumSides.down));
-            /*
-            console.log("block down check")
-            console.log(blockDown);           
-            console.log();
-            console.log("||||||||||||||||||||||||||||||||||||||||||");
-            console.log("hledaci smycka");
-*/
-         
+    
     }
     
             this.addBlock = ( my_table) =>{
